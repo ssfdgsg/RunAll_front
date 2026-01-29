@@ -1,0 +1,1229 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: ""
+    version: 0.0.1
+paths:
+    /api/instances/{instanceId}/ports:
+        post:
+            tags:
+                - Resource
+            description: 1. 设置实例端口暴露
+            operationId: Resource_SetInstancePort
+            parameters:
+                - name: instanceId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.resource.v1.SetInstancePortReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.resource.v1.SetInstancePortResp'
+    /api/orders:
+        get:
+            tags:
+                - OrderService
+            description: 1. 订单列表
+            operationId: OrderService_ListOrders
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.ListOrdersReply'
+    /api/orders/{orderId}:
+        get:
+            tags:
+                - OrderService
+            description: 2. 订单详情
+            operationId: OrderService_GetOrder
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.GetOrderReply'
+    /api/orders/{orderId}/resource:
+        get:
+            tags:
+                - OrderService
+            description: 3. 订单资源信息
+            operationId: OrderService_GetOrderResource
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.GetOrderResourceReply'
+    /api/products:
+        get:
+            tags:
+                - ProductService
+            description: 1. 商品列表
+            operationId: ProductService_ListProduct
+            parameters:
+                - name: minPrice
+                  in: query
+                  schema:
+                    type: string
+                - name: maxPrice
+                  in: query
+                  schema:
+                    type: string
+                - name: sortBy
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: sortOrder
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: mask
+                  in: query
+                  schema:
+                    type: string
+                    format: field-mask
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.ListProductReply'
+        post:
+            tags:
+                - ProductService
+            description: 2. 创建商品
+            operationId: ProductService_CreateProduct
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/bff.product.v1.CreateProductReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.CreateProductReply'
+    /api/products/{productId}/purchase:
+        post:
+            tags:
+                - ProductService
+            description: 3. 购买商品
+            operationId: ProductService_PurchaseProduct
+            parameters:
+                - name: productId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/bff.product.v1.PurchaseProductReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.PurchaseProductReply'
+    /api/seckill/buy:
+        post:
+            tags:
+                - Seckill
+            description: Buy 秒杀抢购
+            operationId: Seckill_Buy
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.seckill.v1.BuyReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.seckill.v1.BuyReply'
+    /api/seckill/current:
+        get:
+            tags:
+                - ProductService
+            description: 4. 获取当前秒杀信息
+            operationId: ProductService_GetCurrentSeckill
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/bff.product.v1.GetCurrentSeckillReply'
+    /api/seckill/result/{reqId}:
+        get:
+            tags:
+                - Seckill
+            description: QueryResult 查询秒杀结果
+            operationId: Seckill_QueryResult
+            parameters:
+                - name: reqId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.seckill.v1.QueryResultReply'
+    /api/user/login:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.LoginReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.LoginResp'
+    /api/user/register:
+        post:
+            tags:
+                - UserService
+            operationId: UserService_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/user.v1.RegisterReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.RegisterResp'
+    /api/users/login:
+        post:
+            tags:
+                - User
+            description: 2.登录账户
+            operationId: User_Login
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.user.v1.LoginReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.user.v1.LoginReply'
+    /api/users/register:
+        post:
+            tags:
+                - User
+            description: 1.注册账户
+            operationId: User_Register
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.user.v1.RegisterReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.user.v1.RegisterReply'
+    /api/users/{userId}:
+        get:
+            tags:
+                - User
+            description: 3.获取用户信息
+            operationId: User_GetUser
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.user.v1.GetUserReply'
+    /api/users/{userId}/resources:
+        get:
+            tags:
+                - User
+            description: 4.列出全部资源
+            operationId: User_ListResources
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  schema:
+                    type: string
+                    format: date-time
+                - name: end
+                  in: query
+                  schema:
+                    type: string
+                    format: date-time
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+                - name: fieldMask
+                  in: query
+                  schema:
+                    type: string
+                    format: field-mask
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.user.v1.ListResourcesReply'
+    /user/{userId}:
+        get:
+            tags:
+                - UserService
+            operationId: UserService_GetUser
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/user.v1.GetUserReply'
+    /v1/instances/{instanceId}/ports:
+        post:
+            tags:
+                - ResourceService
+            description: 2. 设置实例端口暴露
+            operationId: ResourceService_SetInstancePort
+            parameters:
+                - name: instanceId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/resource.v1.SetInstancePortReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/resource.v1.SetInstancePortResp'
+    /v1/orders:
+        get:
+            tags:
+                - OrderService
+            description: List user orders with filters
+            operationId: OrderService_ListOrders
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: status
+                  in: query
+                  schema:
+                    type: string
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.ListOrdersReply'
+    /v1/orders/{orderId}:
+        get:
+            tags:
+                - OrderService
+            description: Get order by ID
+            operationId: OrderService_GetOrder
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.GetOrderReply'
+    /v1/orders/{orderId}/resource:
+        get:
+            tags:
+                - OrderService
+            description: Get order resource info (查询订单关联的资源信息)
+            operationId: OrderService_GetOrderResource
+            parameters:
+                - name: orderId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.GetOrderResourceReply'
+    /v1/products:
+        get:
+            tags:
+                - ProductService
+            description: |-
+                List products with filters, sorting, pagination.
+                 FieldMask query format: mask.paths=name&mask.paths=spec.cpu
+            operationId: ProductService_ListProduct
+            parameters:
+                - name: minPrice
+                  in: query
+                  schema:
+                    type: string
+                - name: maxPrice
+                  in: query
+                  schema:
+                    type: string
+                - name: sortBy
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: sortOrder
+                  in: query
+                  schema:
+                    type: integer
+                    format: enum
+                - name: page
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: pageSize
+                  in: query
+                  schema:
+                    type: integer
+                    format: uint32
+                - name: mask
+                  in: query
+                  schema:
+                    type: string
+                    format: field-mask
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.ListProductReply'
+        post:
+            tags:
+                - ProductService
+            description: Create a new product with spec
+            operationId: ProductService_CreateProduct
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.product.v1.CreateProductReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.CreateProductReply'
+    /v1/products/{productId}/purchase:
+        post:
+            tags:
+                - ProductService
+            description: Purchase a product (normal purchase, not seckill)
+            operationId: ProductService_PurchaseProduct
+            parameters:
+                - name: productId
+                  in: path
+                  required: true
+                  schema:
+                    type: string
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.product.v1.PurchaseProductReq'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.product.v1.PurchaseProductReply'
+    /v1/resources:
+        get:
+            tags:
+                - ResourceService
+            description: 1. 列出全部资源
+            operationId: ResourceService_ListResources
+            parameters:
+                - name: userId
+                  in: query
+                  schema:
+                    type: string
+                - name: start
+                  in: query
+                  schema:
+                    type: string
+                    format: date-time
+                - name: end
+                  in: query
+                  schema:
+                    type: string
+                    format: date-time
+                - name: type
+                  in: query
+                  schema:
+                    type: string
+                - name: fieldMask
+                  in: query
+                  schema:
+                    type: string
+                    format: field-mask
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/resource.v1.ListResourcesReply'
+components:
+    schemas:
+        api.product.v1.CreateProductReply:
+            type: object
+            properties:
+                product:
+                    $ref: '#/components/schemas/api.product.v1.Product'
+        api.product.v1.CreateProductReq:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                price:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/api.product.v1.ProductSpec'
+        api.product.v1.GetOrderReply:
+            type: object
+            properties:
+                order:
+                    $ref: '#/components/schemas/api.product.v1.Order'
+        api.product.v1.GetOrderResourceReply:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/api.product.v1.OrderResource'
+        api.product.v1.ListOrdersReply:
+            type: object
+            properties:
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.product.v1.OrderResource'
+                page:
+                    type: integer
+                    format: uint32
+                pageSize:
+                    type: integer
+                    format: uint32
+                total:
+                    type: string
+        api.product.v1.ListProductReply:
+            type: object
+            properties:
+                products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.product.v1.Product'
+                page:
+                    type: integer
+                    format: uint32
+                pageSize:
+                    type: integer
+                    format: uint32
+                total:
+                    type: string
+        api.product.v1.Order:
+            type: object
+            properties:
+                orderId:
+                    type: string
+                userId:
+                    type: string
+                productId:
+                    type: string
+                reqId:
+                    type: string
+                amount:
+                    type: string
+                resourceId:
+                    type: string
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                paidAt:
+                    type: string
+                completedAt:
+                    type: string
+            description: Order 订单信息
+        api.product.v1.OrderResource:
+            type: object
+            properties:
+                resourceId:
+                    type: string
+                orderId:
+                    type: string
+                userId:
+                    type: string
+                productId:
+                    type: string
+                productName:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/api.product.v1.ProductSpec'
+                status:
+                    type: string
+                createdAt:
+                    type: string
+            description: OrderResource 订单关联的资源信息
+        api.product.v1.Product:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                price:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/api.product.v1.ProductSpec'
+        api.product.v1.ProductSpec:
+            type: object
+            properties:
+                cpu:
+                    type: integer
+                    format: int32
+                memory:
+                    type: integer
+                    format: int32
+                gpu:
+                    type: integer
+                    format: int32
+                image:
+                    type: string
+                configJson:
+                    type: string
+        api.product.v1.PurchaseProductReply:
+            type: object
+            properties:
+                orderId:
+                    type: string
+                resourceId:
+                    type: string
+                status:
+                    type: string
+        api.product.v1.PurchaseProductReq:
+            type: object
+            properties:
+                productId:
+                    type: string
+                userId:
+                    type: string
+        api.resource.v1.PortConfig:
+            type: object
+            properties:
+                port:
+                    type: integer
+                    format: uint32
+                protocol:
+                    type: string
+                ingressDomain:
+                    type: string
+        api.resource.v1.PortResult:
+            type: object
+            properties:
+                port:
+                    type: integer
+                    format: uint32
+                success:
+                    type: boolean
+                accessUrl:
+                    type: string
+                error:
+                    type: string
+        api.resource.v1.SetInstancePortReq:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                open:
+                    type: boolean
+                portConfigs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.resource.v1.PortConfig'
+        api.resource.v1.SetInstancePortResp:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.resource.v1.PortResult'
+                message:
+                    type: string
+        api.seckill.v1.BuyReply:
+            type: object
+            properties:
+                code:
+                    type: integer
+                    format: int32
+                message:
+                    type: string
+                reqId:
+                    type: string
+                streamId:
+                    type: string
+        api.seckill.v1.BuyReq:
+            type: object
+            properties:
+                uid:
+                    type: string
+        api.seckill.v1.QueryResultReply:
+            type: object
+            properties:
+                status:
+                    type: string
+        api.user.v1.GetUserReply:
+            type: object
+            properties:
+                userId:
+                    type: string
+                email:
+                    type: string
+                nickname:
+                    type: string
+                userStatus:
+                    type: integer
+                    format: enum
+        api.user.v1.ListResourcesReply:
+            type: object
+            properties:
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/api.user.v1.Resource'
+                specs:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/api.user.v1.ResourceSpec'
+        api.user.v1.LoginReply:
+            type: object
+            properties:
+                token:
+                    type: string
+        api.user.v1.LoginReq:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+        api.user.v1.RegisterReply:
+            type: object
+            properties:
+                userId:
+                    type: string
+        api.user.v1.RegisterReq:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+                nickname:
+                    type: string
+        api.user.v1.Resource:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                name:
+                    type: string
+                userId:
+                    type: string
+                type:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        api.user.v1.ResourceSpec:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                cpuCores:
+                    type: integer
+                    format: uint32
+                memorySize:
+                    type: integer
+                    format: uint32
+                gpu:
+                    type: integer
+                    format: uint32
+                image:
+                    type: string
+                customConfig:
+                    type: object
+        bff.product.v1.CreateProductReply:
+            type: object
+            properties:
+                product:
+                    $ref: '#/components/schemas/bff.product.v1.Product'
+            description: 创建商品响应
+        bff.product.v1.CreateProductReq:
+            type: object
+            properties:
+                name:
+                    type: string
+                description:
+                    type: string
+                price:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/bff.product.v1.ProductSpec'
+            description: 创建商品请求
+        bff.product.v1.GetCurrentSeckillReply:
+            type: object
+            properties:
+                productId:
+                    type: string
+                stock:
+                    type: integer
+                    format: int32
+                active:
+                    type: boolean
+            description: 获取当前秒杀信息响应
+        bff.product.v1.GetOrderReply:
+            type: object
+            properties:
+                order:
+                    $ref: '#/components/schemas/bff.product.v1.Order'
+            description: 订单详情响应
+        bff.product.v1.GetOrderResourceReply:
+            type: object
+            properties:
+                resource:
+                    $ref: '#/components/schemas/bff.product.v1.OrderResource'
+            description: 订单资源信息响应
+        bff.product.v1.ListOrdersReply:
+            type: object
+            properties:
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/bff.product.v1.OrderResource'
+                page:
+                    type: integer
+                    format: uint32
+                pageSize:
+                    type: integer
+                    format: uint32
+                total:
+                    type: string
+            description: 订单列表响应
+        bff.product.v1.ListProductReply:
+            type: object
+            properties:
+                products:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/bff.product.v1.Product'
+                page:
+                    type: integer
+                    format: uint32
+                pageSize:
+                    type: integer
+                    format: uint32
+                total:
+                    type: string
+            description: 商品列表响应
+        bff.product.v1.Order:
+            type: object
+            properties:
+                orderId:
+                    type: string
+                userId:
+                    type: string
+                productId:
+                    type: string
+                reqId:
+                    type: string
+                amount:
+                    type: string
+                resourceId:
+                    type: string
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                paidAt:
+                    type: string
+                completedAt:
+                    type: string
+            description: 订单信息
+        bff.product.v1.OrderResource:
+            type: object
+            properties:
+                resourceId:
+                    type: string
+                orderId:
+                    type: string
+                userId:
+                    type: string
+                productId:
+                    type: string
+                productName:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/bff.product.v1.ProductSpec'
+                status:
+                    type: string
+                createdAt:
+                    type: string
+            description: 订单资源信息
+        bff.product.v1.Product:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                status:
+                    type: integer
+                    format: int32
+                price:
+                    type: string
+                spec:
+                    $ref: '#/components/schemas/bff.product.v1.ProductSpec'
+            description: 商品信息
+        bff.product.v1.ProductSpec:
+            type: object
+            properties:
+                cpu:
+                    type: integer
+                    format: int32
+                memory:
+                    type: integer
+                    format: int32
+                gpu:
+                    type: integer
+                    format: int32
+                image:
+                    type: string
+                configJson:
+                    type: string
+            description: 商品规格
+        bff.product.v1.PurchaseProductReply:
+            type: object
+            properties:
+                orderId:
+                    type: string
+                resourceId:
+                    type: string
+                status:
+                    type: string
+            description: 购买商品响应
+        bff.product.v1.PurchaseProductReq:
+            type: object
+            properties:
+                productId:
+                    type: string
+                userId:
+                    type: string
+            description: 购买商品请求
+        resource.v1.ListResourcesReply:
+            type: object
+            properties:
+                resources:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/resource.v1.Resource'
+                specs:
+                    type: object
+                    additionalProperties:
+                        $ref: '#/components/schemas/resource.v1.ResourceSpec'
+        resource.v1.PortConfig:
+            type: object
+            properties:
+                port:
+                    type: integer
+                    format: uint32
+                protocol:
+                    type: string
+                ingressDomain:
+                    type: string
+        resource.v1.PortResult:
+            type: object
+            properties:
+                port:
+                    type: integer
+                    format: uint32
+                success:
+                    type: boolean
+                accessUrl:
+                    type: string
+                error:
+                    type: string
+        resource.v1.Resource:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                name:
+                    type: string
+                userId:
+                    type: string
+                type:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+            description: =====================实体/值对象=======================
+        resource.v1.ResourceSpec:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                cpuCores:
+                    type: integer
+                    format: uint32
+                memorySize:
+                    type: integer
+                    format: uint32
+                gpu:
+                    type: integer
+                    format: uint32
+                image:
+                    type: string
+                customConfig:
+                    type: object
+        resource.v1.SetInstancePortReq:
+            type: object
+            properties:
+                instanceId:
+                    type: string
+                open:
+                    type: boolean
+                portConfigs:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/resource.v1.PortConfig'
+            description: 2. 设置实例端口暴露
+        resource.v1.SetInstancePortResp:
+            type: object
+            properties:
+                success:
+                    type: boolean
+                results:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/resource.v1.PortResult'
+                message:
+                    type: string
+        user.v1.GetUserReply:
+            type: object
+            properties:
+                userId:
+                    type: string
+                email:
+                    type: string
+                nickname:
+                    type: string
+                userStatus:
+                    type: integer
+                    format: enum
+        user.v1.LoginReq:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+        user.v1.LoginResp:
+            type: object
+            properties:
+                token:
+                    type: string
+        user.v1.RegisterReq:
+            type: object
+            properties:
+                email:
+                    type: string
+                password:
+                    type: string
+                nickname:
+                    type: string
+        user.v1.RegisterResp:
+            type: object
+            properties:
+                userId:
+                    type: string
+tags:
+    - name: OrderService
+      description: OrderService - 订单服务
+    - name: OrderService
+      description: OrderService 订单服务（包含订单关联的资源查询）
+    - name: ProductService
+      description: ProductService - 商品服务
+    - name: ProductService
+    - name: Resource
+    - name: ResourceService
+    - name: Seckill
+    - name: User
+    - name: UserService

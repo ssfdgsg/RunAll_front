@@ -1,0 +1,126 @@
+import React, { useState, useEffect } from 'react'
+import { Layout, Menu, Button } from 'antd'
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
+import useAuthStore from '../store/auth'
+import { getUser } from '../services/user'
+import LoginModal from '../components/LoginModal'
+import { extractUserId } from '../utils/jwt'
+
+const { Header, Content } = Layout
+
+const navItems = [
+  { key: '/products', label: '商品', to: '/products' },
+  { key: '/seckill', label: '秒杀', to: '/seckill' },
+  { key: '/instances', label: '我的实例', to: '/instances' }
+]
+
+const MainLayout = () => {
+  const location = useLocation()
+  const currentPath = location.pathname.startsWith('/products') ? '/products' : location.pathname
+  
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+  const [userInfo, setUserInfo] = useState(null)
+  const token = useAuthStore((state) => state.token)
+  const userId = useAuthStore((state) => state.userId)
+  const setUserId = useAuthStore((state) => state.setUserId)
+  const clear = useAuthStore((state) => state.clear)
+
+  // 从JWT解析userId
+  useEffect(() => {
+    if (token) {
+      const uid = extractUserId(token)
+      if (uid && uid !== userId) {
+        console.log('Setting userId from JWT:', uid)
+        setUserId(uid)
+      }
+    }
+  }, [token, userId, setUserId])
+
+  // 获取用户信息
+  useEffect(() => {
+    if (userId) {
+      console.log('Fetching user info for userId:', userId)
+      getUser(userId)
+        .then((res) => {
+          console.log('User info fetched:', res.data)
+          setUserInfo(res.data)
+        })
+        .catch((err) => {
+          console.error('Failed to fetch user info:', err)
+        })
+    } else {
+      setUserInfo(null)
+    }
+  }, [userId])
+
+  const handleLogout = () => {
+    clear()
+    setUserInfo(null)
+  }
+
+  return (
+    <Layout className="app-shell">
+      <Header className="app-header">
+        <div className="brand">
+          <span className="brand-mark">RunAll</span>
+          <span className="brand-tag">云资源 · 秒杀平台</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
+          <Menu
+            mode="horizontal"
+            theme="dark"
+            selectedKeys={[currentPath]}
+            items={navItems.map((item) => ({
+              key: item.key,
+              label: <Link to={item.to}>{item.label}</Link>
+            }))}
+            style={{ flex: 1, minWidth: 0, border: 'none' }}
+          />
+          <div className="user-section">
+            {token ? (
+              userInfo ? (
+                <div className="user-info">
+                  <div className="user-avatar">
+                    {userInfo.nickname?.charAt(0).toUpperCase() || userInfo.email?.charAt(0).toUpperCase() || 'U'}
+                  </div>
+                  <span className="user-name">
+                    {userInfo.nickname || userInfo.email?.split('@')[0] || '用户'}
+                  </span>
+                  <Button
+                    type="text"
+                    icon={<LogoutOutlined />}
+                    onClick={handleLogout}
+                    style={{ color: 'var(--text-muted)' }}
+                  />
+                </div>
+              ) : (
+                <div className="user-info">
+                  <div className="user-avatar">
+                    <UserOutlined style={{ fontSize: '14px' }} />
+                  </div>
+                  <span className="user-name">加载中...</span>
+                </div>
+              )
+            ) : (
+              <Button
+                type="primary"
+                icon={<UserOutlined />}
+                onClick={() => setLoginModalOpen(true)}
+              >
+                登录
+              </Button>
+            )}
+          </div>
+        </div>
+      </Header>
+      <Content className="app-content">
+        <Outlet />
+      </Content>
+      <LoginModal open={loginModalOpen} onClose={() => setLoginModalOpen(false)} />
+    </Layout>
+  )
+}
+
+export default MainLayout
+
