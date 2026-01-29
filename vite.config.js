@@ -9,9 +9,16 @@ export default defineConfig({
     allowedHosts: ['runall.me', 'localhost', '157.230.37.18'], // 允许的域名
     proxy: {
       '/api': {
-        target: 'http://47.110.74.199:7999',
+        target: 'http://runall.me:7999',
         changeOrigin: true
       }
     }
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'zustand'],
+    exclude: []
+  },
+  resolve: {
+    dedupe: ['react', 'react-dom']
   }
 })
