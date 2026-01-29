@@ -6,9 +6,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // 监听所有 IPv4 地址
     port: 3000,
+    allowedHosts: ['runall.me', 'localhost', '157.230.37.18'], // 允许的域名
     proxy: {
       '/api': {
-        target: 'http://runall.me:7999',
+        target: 'http://47.110.74.199:7999',
         changeOrigin: true
       }
     }
