@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom'
 import { Terminal as XTerm } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import 'xterm/css/xterm.css'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 const Terminal = () => {
   const { instanceId } = useParams()
-  const token = useAuthStore((state) => state.token)
+  const { token } = useAuth()
   const terminalRef = useRef(null)
   const socketRef = useRef(null)
   const termRef = useRef(null)

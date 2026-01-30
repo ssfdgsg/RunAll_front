@@ -3,7 +3,7 @@ import { Card, Typography, Descriptions, Button, Space, Tag, Spin, Empty, messag
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { getProduct, purchaseProduct } from '../services/product'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 const { Title, Text } = Typography
 
@@ -14,8 +14,7 @@ const ProductDetail = () => {
   const [purchasing, setPurchasing] = useState(false)
   const [product, setProduct] = useState(null)
   
-  const token = useAuthStore((state) => state.token)
-  const userId = useAuthStore((state) => state.userId)
+  const { token, userId } = useAuth()
 
   useEffect(() => {
     loadProduct()

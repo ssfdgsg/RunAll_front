@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Layout, Menu, Button } from 'antd'
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { UserOutlined, LogoutOutlined } from '@ant-design/icons'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 import { getUser } from '../services/user'
 import LoginModal from '../components/LoginModal'
 import { extractUserId } from '../utils/jwt'
@@ -20,11 +20,8 @@ const MainLayout = () => {
   const currentPath = location.pathname.startsWith('/products') ? '/products' : location.pathname
   
   const [loginModalOpen, setLoginModalOpen] = useState(false)
-  const [userInfo, setUserInfo] = useState(null)
-  const token = useAuthStore((state) => state.token)
-  const userId = useAuthStore((state) => state.userId)
-  const setUserId = useAuthStore((state) => state.setUserId)
-  const clear = useAuthStore((state) => state.clear)
+  const [localUserInfo, setLocalUserInfo] = useState(null)
+  const { token, userId, setUserId, logout } = useAuth()
 
   // 从JWT解析userId
   useEffect(() => {
@@ -44,19 +41,19 @@ const MainLayout = () => {
       getUser(userId)
         .then((res) => {
           console.log('User info fetched:', res.data)
-          setUserInfo(res.data)
+          setLocalUserInfo(res.data)
         })
         .catch((err) => {
           console.error('Failed to fetch user info:', err)
         })
     } else {
-      setUserInfo(null)
+      setLocalUserInfo(null)
     }
   }, [userId])
 
   const handleLogout = () => {
-    clear()
-    setUserInfo(null)
+    logout()
+    setLocalUserInfo(null)
   }
 
   return (
@@ -79,13 +76,13 @@ const MainLayout = () => {
           />
           <div className="user-section">
             {token ? (
-              userInfo ? (
+              localUserInfo ? (
                 <div className="user-info">
                   <div className="user-avatar">
-                    {userInfo.nickname?.charAt(0).toUpperCase() || userInfo.email?.charAt(0).toUpperCase() || 'U'}
+                    {localUserInfo.nickname?.charAt(0).toUpperCase() || localUserInfo.email?.charAt(0).toUpperCase() || 'U'}
                   </div>
                   <span className="user-name">
-                    {userInfo.nickname || userInfo.email?.split('@')[0] || '用户'}
+                    {localUserInfo.nickname || localUserInfo.email?.split('@')[0] || '用户'}
                   </span>
                   <Button
                     type="text"
@@ -123,4 +120,3 @@ const MainLayout = () => {
 }
 
 export default MainLayout
-

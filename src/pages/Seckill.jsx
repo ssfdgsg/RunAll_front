@@ -3,7 +3,7 @@ import { Card, Button, Typography, message, Alert, Progress, Space, Tag, Spin, R
 import { ThunderboltOutlined, CheckCircleOutlined, CloseCircleOutlined, LoadingOutlined, FireOutlined, ClockCircleOutlined } from '@ant-design/icons'
 import { buy, queryResult } from '../services/seckill'
 import { getCurrentSeckill, listProducts } from '../services/product'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -18,8 +18,7 @@ const Seckill = () => {
   const [buying, setBuying] = useState(false)
   const timerRef = useRef(null)
   
-  const token = useAuthStore((state) => state.token)
-  const userId = useAuthStore((state) => state.userId)
+  const { token, userId } = useAuth()
 
   // 渲染商品规格标签
   const renderSpecTags = () => {

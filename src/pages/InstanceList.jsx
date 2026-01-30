@@ -14,7 +14,7 @@ import {
 } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { listResources } from '../services/resource'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 const { Title, Text, Paragraph } = Typography
 const { RangePicker } = DatePicker
@@ -24,8 +24,7 @@ const InstanceList = () => {
   const [loading, setLoading] = useState(false)
   const [resources, setResources] = useState([])
   const [specs, setSpecs] = useState({})
-  const token = useAuthStore((state) => state.token)
-  const userId = useAuthStore((state) => state.userId)
+  const { token, userId } = useAuth()
 
   // 自动加载用户资源
   useEffect(() => {

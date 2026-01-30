@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { Modal, Form, Input, Button, Tabs, message } from 'antd'
 import { login, register } from '../services/user'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 import { hashPassword } from '../utils/crypto'
 
 const LoginModal = ({ open, onClose }) => {
   const [activeKey, setActiveKey] = useState('login')
   const [loading, setLoading] = useState(false)
-  const setToken = useAuthStore((state) => state.setToken)
+  const { setToken } = useAuth()
 
   const handleLogin = async (values) => {
     setLoading(true)

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, Form, Input, Button, Tabs, Typography, message } from 'antd'
 import { login, register } from '../services/user'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 import { hashPassword } from '../utils/crypto'
 
 const { Title, Text } = Typography
@@ -9,9 +9,7 @@ const { Title, Text } = Typography
 const Login = () => {
   const [activeKey, setActiveKey] = useState('login')
   const [loading, setLoading] = useState(false)
-  const token = useAuthStore((state) => state.token)
-  const setToken = useAuthStore((state) => state.setToken)
-  const setUserId = useAuthStore((state) => state.setUserId)
+  const { token, login: authLogin } = useAuth()
 
   const handleLogin = async (values) => {
     setLoading(true)
@@ -23,7 +21,7 @@ const Login = () => {
         password: hashedPassword
       })
       const nextToken = response?.data?.token || ''
-      setToken(nextToken)
+      authLogin(nextToken, null)
       message.success('登录成功')
     } catch (error) {
       message.error('登录失败，请检查账号信息')
@@ -43,9 +41,6 @@ const Login = () => {
         nickname: values.nickname
       })
       const nextUserId = response?.data?.userId || ''
-      if (nextUserId) {
-        setUserId(nextUserId)
-      }
       message.success('注册成功，请登录')
     } catch (error) {
       message.error('注册失败，请稍后重试')

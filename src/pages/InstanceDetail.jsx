@@ -4,7 +4,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { ArrowLeftOutlined, ReloadOutlined, CodeOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons'
 import { listResources } from '../services/resource'
 import { setInstancePorts } from '../services/instance'
-import useAuthStore from '../store/auth'
+import { useAuth } from '../contexts/AuthContext'
 
 const { Title, Text, Paragraph } = Typography
 
@@ -20,8 +20,7 @@ const InstanceDetail = () => {
   const [portForm] = Form.useForm()
   const [savingPorts, setSavingPorts] = useState(false)
   
-  const token = useAuthStore((state) => state.token)
-  const userId = useAuthStore((state) => state.userId)
+  const { token, userId } = useAuth()
 
   useEffect(() => {
     if (userId) {
