@@ -9,11 +9,15 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
+    console.log('=== HTTP Request Interceptor ===')
+    console.log('Token from localStorage:', token ? token.substring(0, 30) + '...' : 'null')
+    console.log('Request URL:', config.url)
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
-      console.log('Request with token:', token.substring(0, 20) + '...')
+      console.log('Authorization header set:', config.headers.Authorization.substring(0, 40) + '...')
     } else {
-      console.log('Request without token')
+      console.log('No token found, request without auth')
     }
     return config
   },
