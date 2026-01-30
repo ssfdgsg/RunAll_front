@@ -19,9 +19,22 @@ const LoginModal = ({ open, onClose }) => {
         password: hashedPassword
       })
       const token = response?.data?.token || ''
+      console.log('Login successful, token:', token ? token.substring(0, 30) + '...' : 'empty')
+      
+      // 直接保存到 localStorage，确保立即可用
+      if (token) {
+        localStorage.setItem('token', token)
+        console.log('Token saved to localStorage')
+      }
+      
       setToken(token)
       message.success('登录成功')
       onClose()
+      
+      // 刷新页面以重新加载数据
+      setTimeout(() => {
+        window.location.reload()
+      }, 500)
     } catch (error) {
       message.error('登录失败，请检查账号信息')
     } finally {
