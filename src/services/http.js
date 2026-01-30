@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { message } from 'antd'
-import useAuthStore from '../store/auth'
 
 const http = axios.create({
   baseURL: '/api'
@@ -9,7 +8,7 @@ const http = axios.create({
 // 请求拦截器
 http.interceptors.request.use(
   (config) => {
-    const token = useAuthStore.getState().token
+    const token = localStorage.getItem('token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
       console.log('Request with token:', token.substring(0, 20) + '...')
@@ -39,7 +38,10 @@ http.interceptors.response.use(
         case 401:
           message.error('登录已过期，请重新登录')
           // 清除token
-          useAuthStore.getState().clear()
+          localStorage.removeItem('token')
+          localStorage.removeItem('userId')
+          // 刷新页面让 Context 重新加载
+          window.location.reload()
           break
         case 403:
           message.error('没有权限访问')
