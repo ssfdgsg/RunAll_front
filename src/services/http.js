@@ -5,20 +5,23 @@ const http = axios.create({
   baseURL: '/api'
 })
 
-// 请求拦截器
+// 请求拦截器 - 每次都重新读取 token
 http.interceptors.request.use(
   (config) => {
+    // 每次请求都重新从 localStorage 读取
     const token = localStorage.getItem('token')
-    console.log('=== HTTP Request Interceptor ===')
-    console.log('Token from localStorage:', token ? token.substring(0, 30) + '...' : 'null')
-    console.log('Request URL:', config.url)
     
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-      console.log('Authorization header set:', config.headers.Authorization.substring(0, 40) + '...')
+    console.log('=== HTTP Request ===')
+    console.log('URL:', config.url)
+    console.log('Token exists:', !!token)
+    
+    if (token && token.length > 0) {
+      config.headers['Authorization'] = `Bearer ${token}`
+      console.log('Authorization header added:', `Bearer ${token.substring(0, 30)}...`)
     } else {
-      console.log('No token found, request without auth')
+      console.log('No token, skipping Authorization header')
     }
+    
     return config
   },
   (error) => {
@@ -41,11 +44,11 @@ http.interceptors.response.use(
       switch (status) {
         case 401:
           message.error('登录已过期，请重新登录')
-          // 清除token
           localStorage.removeItem('token')
           localStorage.removeItem('userId')
-          // 刷新页面让 Context 重新加载
-          window.location.reload()
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000)
           break
         case 403:
           message.error('没有权限访问')

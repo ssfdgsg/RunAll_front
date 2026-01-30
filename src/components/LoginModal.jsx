@@ -14,18 +14,26 @@ const LoginModal = ({ open, onClose }) => {
     try {
       // 对密码进行哈希处理
       const hashedPassword = await hashPassword(values.password)
+      console.log('Sending login request...')
       const response = await login({
         email: values.email,
         password: hashedPassword
       })
+      console.log('Login response:', response)
+      console.log('Response data:', response?.data)
+      
       const token = response?.data?.token || ''
-      console.log('Login successful, token:', token ? token.substring(0, 30) + '...' : 'empty')
+      console.log('Extracted token:', token ? token.substring(0, 50) + '...' : 'EMPTY OR NULL')
+      
+      if (!token) {
+        message.error('登录失败：未获取到 token')
+        return
+      }
       
       // 直接保存到 localStorage，确保立即可用
-      if (token) {
-        localStorage.setItem('token', token)
-        console.log('Token saved to localStorage')
-      }
+      localStorage.setItem('token', token)
+      console.log('Token saved to localStorage, length:', token.length)
+      console.log('Verify localStorage:', localStorage.getItem('token')?.substring(0, 50))
       
       setToken(token)
       message.success('登录成功')
@@ -36,6 +44,7 @@ const LoginModal = ({ open, onClose }) => {
         window.location.reload()
       }, 500)
     } catch (error) {
+      console.error('Login error:', error)
       message.error('登录失败，请检查账号信息')
     } finally {
       setLoading(false)
