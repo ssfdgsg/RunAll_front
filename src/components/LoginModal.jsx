@@ -39,10 +39,7 @@ const LoginModal = ({ open, onClose }) => {
       message.success('登录成功')
       onClose()
       
-      // 刷新页面以重新加载数据
-      setTimeout(() => {
-        window.location.reload()
-      }, 500)
+      // 不自动刷新，让 Context 自动更新
     } catch (error) {
       console.error('Login error:', error)
       message.error('登录失败，请检查账号信息')
