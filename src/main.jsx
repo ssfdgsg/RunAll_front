@@ -11,23 +11,21 @@ import { AuthProvider } from './contexts/AuthContext'
 dayjs.locale('zh-cn')
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <ConfigProvider
-        locale={zhCN}
-        theme={{
-          token: {
-            colorPrimary: '#1890ff',
-            colorSuccess: '#52c41a',
-            colorWarning: '#faad14',
-            colorError: '#ff4d4f',
-            borderRadius: 8,
-            fontSize: 14
-          }
-        }}
-      >
-        <App />
-      </ConfigProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  <AuthProvider>
+    <ConfigProvider
+      locale={zhCN}
+      theme={{
+        token: {
+          colorPrimary: '#1890ff',
+          colorSuccess: '#52c41a',
+          colorWarning: '#faad14',
+          colorError: '#ff4d4f',
+          borderRadius: 8,
+          fontSize: 14
+        }
+      }}
+    >
+      <App />
+    </ConfigProvider>
+  </AuthProvider>
 )

@@ -31,6 +31,8 @@ http.interceptors.request.use(
 )
 
 // 响应拦截器
+let isRefreshing = false // 防止重复刷新
+
 http.interceptors.response.use(
   (response) => {
     return response
@@ -43,12 +45,25 @@ http.interceptors.response.use(
       
       switch (status) {
         case 401:
-          message.error('登录已过期，请重新登录')
-          localStorage.removeItem('token')
-          localStorage.removeItem('userId')
-          setTimeout(() => {
-            window.location.reload()
-          }, 1000)
+          // 只有在已登录（有token）的情况下才提示过期并刷新
+          const hasToken = localStorage.getItem('token')
+          if (hasToken && !isRefreshing) {
+            isRefreshing = true
+            message.error('登录已过期，请重新登录')
+            localStorage.removeItem('token')
+            localStorage.removeItem('userId')
+            
+            // 3秒后才允许再次刷新
+            setTimeout(() => {
+              isRefreshing = false
+            }, 3000)
+            
+            // 延迟刷新，避免无限循环
+            setTimeout(() => {
+              window.location.href = '/'
+            }, 1500)
+          }
+          // 如果没有token，说明本来就没登录，不需要提示和刷新
           break
         case 403:
           message.error('没有权限访问')

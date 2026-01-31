@@ -37,14 +37,16 @@ const Terminal = () => {
 
     if (terminalRef.current) {
       term.open(terminalRef.current)
-      // 延迟调用 fit，等待 DOM 渲染完成
+      // 延迟调用 fit，等待 DOM 完全渲染
       setTimeout(() => {
         try {
-          fitAddon.fit()
+          if (terminalRef.current && fitAddon) {
+            fitAddon.fit()
+          }
         } catch (e) {
           console.error('Fit error:', e)
         }
-      }, 100)
+      }, 300)
     }
 
     term.writeln('终端已初始化，正在连接...')
@@ -110,10 +112,8 @@ const Terminal = () => {
     console.log('Token:', token)
     console.log('Instance ID:', instanceId)
     
-    // 根据当前协议自动选择 ws 或 wss
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const host = window.location.host // 使用当前域名和端口
-    const wsUrl = `${protocol}//${host}/api/ws/exec?token=${encodeURIComponent(token)}`
+    // WebSocket 连接到后端 API 服务器
+    const wsUrl = `wss://api.runall.me:7999/api/ws/exec?token=${encodeURIComponent(token)}`
     term.writeln('正在连接到 WebSocket...')
     console.log('WebSocket URL:', wsUrl)
 
