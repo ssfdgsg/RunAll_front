@@ -2,7 +2,7 @@ import axios from 'axios'
 import { message } from 'antd'
 
 const http = axios.create({
-  baseURL: '/api'
+  baseURL: '/api' // 通过 Vite proxy 转发
 })
 
 // 请求拦截器 - 每次都重新读取 token

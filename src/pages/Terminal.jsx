@@ -112,8 +112,8 @@ const Terminal = () => {
     console.log('Token:', token)
     console.log('Instance ID:', instanceId)
     
-    // WebSocket 连接到后端 API 服务器
-    const wsUrl = `wss://api.runall.me:7999/api/ws/exec?token=${encodeURIComponent(token)}`
+    // WebSocket 连接到后端服务器 IP
+    const wsUrl = `wss://47.110.74.199:7999/api/ws/exec?token=${encodeURIComponent(token)}`
     term.writeln('正在连接到 WebSocket...')
     console.log('WebSocket URL:', wsUrl)
 
