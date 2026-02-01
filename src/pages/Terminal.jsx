@@ -112,8 +112,10 @@ const Terminal = () => {
     console.log('Token:', token)
     console.log('Instance ID:', instanceId)
     
-    // WebSocket 连接到后端服务器 IP
-    const wsUrl = `wss://47.110.74.199:7999/api/ws/exec?token=${encodeURIComponent(token)}`
+    // WebSocket 通过 nginx 代理到后端
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const host = window.location.host
+    const wsUrl = `${protocol}//${host}/ws/exec?token=${encodeURIComponent(token)}`
     term.writeln('正在连接到 WebSocket...')
     console.log('WebSocket URL:', wsUrl)
 
