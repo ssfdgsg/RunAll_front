@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="logoTitle">
+  <title id="logoTitle">RunAll</title>
+  <defs>
+    <linearGradient id="logoGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d9ff" />
+      <stop offset="100%" stop-color="#1890ff" />
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="#0f172a" />
+  <path d="M32 88V40h18.5c15.4 0 24.5 8.5 24.5 23.6S65.9 88 50.5 88H32Zm14-11h4.7c7.4 0 12.3-4.3 12.3-13.4s-4.9-13.6-12.3-13.6H46v27Zm37 11V40h13v48H83Z" fill="url(#logoGradient)" />
+</svg>
